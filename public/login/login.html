@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/login.css">
     <script src="./login.js" defer type="module"></script>
 </head>
 
@@ -13,17 +14,21 @@
     <header>
     </header>
     <main>
-        <h2>Register</h2>
-        <input id="reg-email" placeholder="Email">
-        <input id="reg-password" type="password" placeholder="Password">
-        <button id="register-btn">Register</button>
+        <section class="auth-box">
+            <h2>Register</h2>
+            <input id="reg-email" placeholder="Email">
+            <input id="reg-password" type="password" placeholder="Password">
+            <button id="register-btn">Register</button>
+        </section>
 
         <hr>
 
-        <h2>Login</h2>
-        <input id="login-email" placeholder="Email">
-        <input id="login-password" type="password" placeholder="Password">
-        <button id="login-btn">Login</button>
+        <section class="auth-box">
+            <h2>Login</h2>
+            <input id="login-email" placeholder="Email">
+            <input id="login-password" type="password" placeholder="Password">
+            <button id="login-btn">Login</button>
+        </section>
 
         <p id="auth-message"></p>
     </main>
