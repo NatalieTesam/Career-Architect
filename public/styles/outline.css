@@ -78,3 +78,54 @@
 }
 
 /* ...existing code ... */
+
+#chat-box {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: #1e293b;
+    color: white;
+    border-radius: 12px;
+}
+
+#chat-output {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.chat-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+#user-question {
+    flex-grow: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+}
+
+#send-btn {
+    padding: 10px 20px;
+    background: #0b74de;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.phase-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f1f5f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.phase-steps {
+    padding-left: 3rem;
+    color: #475569;
+}
