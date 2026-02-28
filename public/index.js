@@ -35,8 +35,17 @@ async function getJobs(role) {
     // return jobs.results;
   } catch (error) {
     console.error("Error fetching jobs:", error);
+    document.getElementById('jobs').innerHTML = '<p>Could not load jobs at this time.</p>';
     return [];
   }
+
+  document.getElementById("search-button").addEventListener("click", () => {
+    const roleInput = document.getElementById("role-input").value.trim();
+    if (roleInput) {
+      getJobs(roleInput);
+    }
+  });
+
 };
 
 function displayJobs(jobs) {
@@ -144,7 +153,7 @@ function createGraph(steps) {
   //   line.setAttribute("stroke-width", "2");
 
   //   svg.appendChild(line);
-  // });
+  // }.);
 };
 
 
@@ -156,7 +165,7 @@ function createGraph(steps) {
 
 
 
-async function init(){
+async function init() {
   // generalSkills();
   branchTemplate(users);
 

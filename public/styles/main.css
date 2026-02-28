@@ -160,17 +160,29 @@ footer {
     display: flex;
     height: 900px;
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 25% 75%;
 }
 
 #container {
-    justify-items: center;
     overflow-y: auto;
     padding: 10px;
     /* scroll only inside this box */
     scrollbar-width: thin;
     scrollbar-color: rgba(0,0,0,0.2) transparent;
 }
+
+#left-side{
+    justify-content: center;
+    display: grid;
+    grid-template-rows: 15% 85%;
+}
+
+/* #bullet-point{
+    background-color: white;
+    border-radius: 8px;
+    width: 347px;
+    height: 100px;
+} */
 
 /* #connections {
     position: absolute;
@@ -193,3 +205,17 @@ footer {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
