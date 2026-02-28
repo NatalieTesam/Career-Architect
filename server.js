@@ -13,9 +13,9 @@ app.use(express.static('public'));
 
 // API route
 app.get('/api/jobs', async (req, res) => {
-    const role = req.query.role || 'developer';
+    const role = "";
     try {
-        const response = await fetch(`https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=${idKey}&app_key=${appKey}&what=${encodeURIComponent(role)}&results_per_page=5`);
+        const response = await fetch(`https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=${idKey}&app_key=${appKey}&what=${encodeURIComponent(role)}&results_per_page=8`);
         const data = await response.json();
         res.json(data.results);
     } catch (err) {

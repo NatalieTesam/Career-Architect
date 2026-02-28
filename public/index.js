@@ -25,7 +25,7 @@ function branchTemplate(users) {
 }
 
 async function getJobs(role) {
-  const url = `/api/jobs?role=${encodeURIComponent(role)}&results_per_page=5`;
+  const url = `/api/jobs?role=${encodeURIComponent(role)}&results_per_page=8`;
 
   try {
     const response = await fetch(url);
@@ -61,8 +61,7 @@ const professionalSteps = [
   "Grow LinkedIn Connections",
   "Attend Web Dev Meetups",
   "Conduct Informational Interview",
-  "Apply to Targeted Roles",
-  "Test"
+  "Apply to Targeted Roles ~ hardwork, cooperation"
 ];
 
 // function renderStepsTree(steps) {
@@ -79,31 +78,32 @@ const professionalSteps = [
 // }
 
 function createGraph(steps) {
-  const container = document.getElementById("steps-tree");
+  const tree = document.getElementById("steps-tree");
   const svg = document.getElementById("connections");
 
-  const width = container.clientWidth;
-  const height = container.clientHeight;
+  const width = 950;
+  const height = 480;
 
+  const nodeSize = 120;
   const nodePositions = [];
 
   steps.forEach((step, index) => {
-    const node = document.createElement("div");
+    const node = document.getElementById("node-html");
     node.classList.add("node");
     node.innerHTML = step;
 
     // Random position (with padding so it doesn't overflow)
-    const x = Math.random() * (width - 150);
-    const y = Math.random() * (height - 150);
+    const x = Math.random() * (width - nodeSize);
+    const y = Math.random() * (height - nodeSize);
 
     node.style.left = `${x}px`;
     node.style.top = `${y}px`;
 
-    container.appendChild(node);
+    tree.appendChild(node);
 
     nodePositions.push({
-      x: x + 60, // center of circle
-      y: y + 60
+      x: x + nodeSize / 2, // center of circle
+      y: y + nodeSize / 2
     });
   });
 
