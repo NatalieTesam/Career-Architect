@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Steps</title>
     <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/outline.css">
     <script src="outline.js" defer type="module"></script>
 
 </head>
@@ -15,7 +16,18 @@
     </header>
     <main>
         <section class="skill-checklist">
-            <h2>Learn Python</h2>
+            <div class="skill-title">
+                <h2>Learn Python</h2>
+                <p class="time-estimate">Time: 4 weeks</p>
+            </div>
+            
+            <div class="progress-container" aria-hidden="false">
+              <progress id="skill-progress" value="0" max="0"></progress>
+              <div class="progress-meta">
+                <span id="progress-text">0 / 0</span>
+                <span id="progress-percent" aria-hidden="true">0%</span>
+              </div>
+            </div>
 
             <ul>
                 <li>
@@ -107,6 +119,6 @@
     </main>
     <footer>
     </footer>
-</body>
 
+</body>
 </html>
