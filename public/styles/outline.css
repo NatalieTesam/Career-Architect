@@ -7,6 +7,24 @@
 
 /* ...existing code ... */
 
+/* Make skill title and progress container inline, and children inline */
+.skill-title {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+.progress-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.progress-container > * {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+}
+
 .skill-checklist ul {
   list-style: none;
   margin: 0;
