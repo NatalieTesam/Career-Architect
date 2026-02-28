@@ -141,7 +141,7 @@ nav a:hover::after {
 
 /* Left Panel */
 #left-side {
-    background: radial-gradient(circle at top right, #e6f7ee, var(--bg) 60%);
+    background: radial-gradient(circle at top right, #e6f7ee, var(--border-soft) 60%);
     border-radius: 18px;
     padding: 20px;
     box-shadow:
