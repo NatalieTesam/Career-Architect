@@ -1,3 +1,3 @@
-import { loadHeaderFooter } from "../../scripts/utils.mjs";
+import { loadHeaderFooter } from "../scripts/utils.mjs";
 
 loadHeaderFooter();
