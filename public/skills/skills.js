@@ -1,6 +1,20 @@
 import { loadHeaderFooter } from "../../scripts/utils.mjs";
 
 loadHeaderFooter();
+// Define this outside so other functions can see it
+let openModal; 
+
+(function () {
+  const modal = document.getElementById('skill-modal');
+  // ... (keep all your other consts the same)
+
+  // Assign the function to the outer variable
+  openModal = function(skillId, skillLabel, trigger) {
+     // ... (keep all your existing openModal logic)
+  };
+
+  // ... (keep the rest of the IIFE as is)
+})();
 
 (function () {
   const modal = document.getElementById('skill-modal');
@@ -197,7 +211,7 @@ function renderJobCard(title, description, skills) {
             <ul class="skills-list">
                 ${skills.map(skill => `
                     <li>
-                        <button type="button" class="skill-btn">
+                        <button type="button" class="skill-btn" data-skill="${skill}">
                             ${skill}
                         </button>
                     </li>
@@ -208,12 +222,24 @@ function renderJobCard(title, description, skills) {
 
     jobListContainer.prepend(jobLi);
 
-    // Setup click events for the outline page
+    // --- THE FIX: Make AI buttons open the modal ---
     jobLi.querySelectorAll('.skill-btn').forEach(btn => {
-        btn.onclick = () => {
-            sessionStorage.setItem('selectedSkill', btn.innerText.trim());
+        btn.onclick = (e) => {
+            e.preventDefault();
+            const skillLabel = btn.innerText.trim();
+            // This calls the openModal function from your top section
+            // We use sessionStorage so the next page knows what we're learning
+            sessionStorage.setItem('selectedSkill', skillLabel);
             sessionStorage.setItem('selectedJob', title);
-            window.location.href = "../outline/outline.html";
+            
+            // Trigger the modal (global access check)
+            if (typeof openModal === "function") {
+                openModal(skillLabel, skillLabel, btn);
+            } else {
+                // If openModal is trapped in the IIFE, we trigger a click 
+                // on the document listener you already have.
+                btn.dispatchEvent(new Event('click', { bubbles: true }));
+            }
         };
     });
 }
