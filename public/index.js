@@ -1,3 +1,6 @@
+const FEDORA_IP = "100.94.140.36"; 
+const API_URL = `http://${FEDORA_IP}:1234/v1/chat/completions`;
+
 const users = [
   {
     id: 1,
@@ -11,9 +14,27 @@ const users = [
   }
 ];
 
-function generalSkills() {
+// --- DATA UTILITIES ---
 
+function getMasterProgress() {
+  const raw = localStorage.getItem("career_progress_file");
+  if (!raw) {
+    console.log("No master file found");
+    return null;
+  }
+  return JSON.parse(raw);
 }
+
+function extractSkills(masterFile) {
+  if (!masterFile || !masterFile.allSkills) return [];
+
+  return Object.values(masterFile.allSkills).map(skill => ({
+    title: skill.skillTitle,
+    phases: skill.completedPhases.map(p => p.phaseTitle)
+  }));
+}
+
+// --- UI RENDERING ---
 
 function branchTemplate(users) {
   const html = users
@@ -21,8 +42,57 @@ function branchTemplate(users) {
     .join("");
 
   const container = document.getElementById("template");
-  // container.innerHTML = html;
+  if (container) container.innerHTML = html;
 }
+
+function renderSkills(skills) {
+  const container = document.getElementById("skills-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  if (skills.length === 0) {
+    container.innerHTML = "<p style='color: #6b7280;'>No skills started yet. Visit the Skills page to begin!</p>";
+    return;
+  }
+
+  skills.forEach(skill => {
+    const skillTitle = document.createElement("h2");
+    skillTitle.style.margin = "20px 0 10px 0";
+    skillTitle.innerText = skill.title;
+    container.appendChild(skillTitle);
+
+    const roadmap = document.createElement("div");
+    roadmap.style.display = "flex";
+    roadmap.style.gap = "20px";
+    roadmap.style.marginBottom = "40px";
+    roadmap.style.flexWrap = "wrap";
+
+    skill.phases.forEach((phase, index) => {
+      const box = document.createElement("div");
+      box.innerText = `${phase}`;
+      box.style.padding = "15px";
+      box.style.background = "#fff";
+      box.style.borderRadius = "8px";
+      box.style.boxShadow = "0 4px 10px rgba(0,0,0,0.08)";
+      box.style.border = "1px solid #e5efe9";
+
+      roadmap.appendChild(box);
+
+      if (index < skill.phases.length - 1) {
+        const arrow = document.createElement("div");
+        arrow.innerText = ">";
+        arrow.style.fontSize = "24px";
+        arrow.style.alignSelf = "center";
+        arrow.style.color = "#22c55e";
+        roadmap.appendChild(arrow);
+      }
+    });
+
+    container.appendChild(roadmap);
+  });
+}
+
+// --- JOB API LOGIC ---
 
 async function getJobs(role = "developer") {
   const url = `/api/jobs?role=${encodeURIComponent(role)}&results_per_page=8`;
@@ -33,21 +103,11 @@ async function getJobs(role = "developer") {
 
     const jobs = await response.json();
     displayJobs(jobs);
-
-    // return jobs.results;
   } catch (error) {
     console.error("Error fetching jobs:", error);
     document.getElementById('jobs').innerHTML = '<p>Could not load jobs at this time.</p>';
   }
-};
-
-document.getElementById("search-button").addEventListener("click", () => {
-  const roleInput = document.getElementById("role-input").value.trim();
-  if (roleInput) {
-    getJobs(roleInput);
-  }
-});
-
+}
 
 function displayJobs(jobs) {
   const container = document.getElementById("jobs");
@@ -57,260 +117,97 @@ function displayJobs(jobs) {
   }
 
   container.innerHTML = jobs.map(job => `
-    <div class="job">
-      <h3>${job.title}</h3>
-      <p>${job.company.display_name}</p>
-      <a href="${job.redirect_url}" target="_blank" class="job-link">View Job</a>
+    <div class="job" style="margin-bottom: 15px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
+      <h3 style="font-size: 1rem;">${job.title}</h3>
+      <p style="font-size: 0.8rem; color: #6b7280;">${job.company.display_name}</p>
+      <a href="${job.redirect_url}" target="_blank" class="job-link" style="color: #22c55e; font-size: 0.8rem;">View Job</a>
     </div>
   `).join("");
-};
+}
 
-function getMasterProgress() {
-  const raw = localStorage.getItem("career_progress_file");
+// --- AI RESUME BUILDER LOGIC ---
 
-  if (!raw) {
-    console.log("No master file found");
-    return null;
+async function generateResumeBullets() {
+  const bulletContainer = document.getElementById('bullet-point');
+  const masterData = getMasterProgress();
+
+  if (!masterData || !masterData.allSkills) {
+    bulletContainer.innerHTML = "<p style='font-size: 0.8rem; color: #6b7280;'>Finish a roadmap phase to see AI bullets!</p>";
+    return;
   }
 
-  return JSON.parse(raw);
-};
+  const completedSkills = Object.values(masterData.allSkills).filter(s => s.completedPhases.length > 0);
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   const data = getMasterProgress();
-//   console.log("Loaded data:", data);
-// });
+  if (completedSkills.length === 0) {
+    bulletContainer.innerHTML = "<p style='font-size: 0.8rem; color: #6b7280;'>Check off some tasks in 'Next Steps' to build your resume.</p>";
+    return;
+  }
 
-function extractSkills(masterFile) {
-  if (!masterFile || !masterFile.allSkills) return [];
+  bulletContainer.innerHTML = "<em style='font-size: 0.8rem;'>Writing resume lines...</em>";
 
-  return Object.values(masterFile.allSkills).map(skill => ({
-    title: skill.skillTitle,
-    phases: skill.completedPhases.map(p => p.phaseTitle)
-  }));
-};
+  for (const skillEntry of completedSkills) {
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "google/gemma-3-1b-it",
+          messages: [
+            { 
+              role: "system", 
+              content: "You are a Technical Resume Expert. Write ONE powerful, measurable resume bullet point starting with a strong action verb based on these tasks. One sentence only. Do not use Markdown bolding." 
+            },
+            { 
+              role: "user", 
+              content: `Skill: ${skillEntry.skillTitle}. Completed Work: ${JSON.stringify(skillEntry.completedPhases)}` 
+            }
+          ],
+          temperature: 0.3
+        })
+      });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const master = getMasterProgress();
-  const skills = extractSkills(master);
+      const data = await response.json();
+      const aiBullet = data.choices[0].message.content;
 
-  console.log("Extracted skills:", skills);
-});
+      if (bulletContainer.querySelector('em')) bulletContainer.innerHTML = "";
 
-function renderSkills(skills) {
-  const container = document.getElementById("skills-container");
-  container.innerHTML = "";
+      const bulletWrapper = document.createElement('div');
+      bulletWrapper.style = "margin-bottom: 12px; padding: 8px; border-left: 3px solid #22c55e; background: #fff; border-radius: 4px;";
+      bulletWrapper.innerHTML = `
+        <strong style="font-size: 0.7rem; color: #16a34a; text-transform: uppercase;">${skillEntry.skillTitle}</strong>
+        <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #374151;">• ${aiBullet}</p>
+      `;
+      bulletContainer.appendChild(bulletWrapper);
 
-  skills.forEach(skill => {
-    const skillTitle = document.createElement("h2");
-    skillTitle.innerText = skill.title;
-    container.appendChild(skillTitle);
+    } catch (err) {
+      console.error("AI Error:", err);
+      bulletContainer.innerHTML = "<p style='font-size: 0.8rem; color: #ef4444;'>AI Server Offline</p>";
+    }
+  }
+}
 
-    const roadmap = document.createElement("div");
-    roadmap.style.display = "flex";
-    roadmap.style.gap = "20px";
-    roadmap.style.marginBottom = "40px";
+// --- INITIALIZATION ---
 
-    skill.phases.forEach((phase, index) => {
+async function init() {
+  // 1. Run Legacy Functions
+  branchTemplate(users);
+  getJobs("developer");
 
-      const box = document.createElement("div");
-      box.innerText = `${phase}`;
-      box.style.padding = "15px";
-      box.style.background = "#fff";
-      box.style.borderRadius = "8px";
-      box.style.boxShadow = "0 4px 10px rgba(0,0,0,0.08)";
-
-      roadmap.appendChild(box);
-
-      if (index < skill.phases.length - 1) {
-        const arrow = document.createElement("div");
-        arrow.innerText = ">";
-        arrow.style.fontSize = "24px";
-        arrow.style.alignSelf = "center";
-        roadmap.appendChild(arrow);
-      }
-    });
-
-    container.appendChild(roadmap);
-  });
-};
-
-document.addEventListener("DOMContentLoaded", () => {
+  // 2. Load and Render Visual Roadmap
   const master = getMasterProgress();
   const skills = extractSkills(master);
   renderSkills(skills);
+
+  // 3. Generate AI Resume Content
+  generateResumeBullets();
+}
+
+// Listeners
+document.getElementById("search-button").addEventListener("click", () => {
+  const roleInput = document.getElementById("role-input").value.trim();
+  if (roleInput) {
+    getJobs(roleInput);
+  }
 });
-
-
-
-// let skills = [
-//   {
-//     title: "Informational Interviews",
-//     phases: [
-//       "Research professionals in your field",
-//       "Send 5 outreach messages",
-//       "Schedule 2 calls",
-//       "Follow up and thank them"
-//     ]
-//   },
-//   {
-//     title: "LinkedIn Optimization",
-//     phases: [
-//       "Update headline",
-//       "Rewrite summary",
-//       "Add 5 new connections",
-//       "Request 2 recommendations"
-//     ]
-//   }
-// ];
-
-// function loadSkillsFromMasterFile() {
-//   const raw = localStorage.getItem("career_progress_file");
-
-//   if (!raw) return [];
-
-//   const masterFile = JSON.parse(raw);
-
-//   const skills = Object.values(masterFile.allSkills).map(skill => ({
-//     title: skill.skillTitle,
-//     phases: skill.completedPhases.map(phase => phase.phaseTitle)
-//   }));
-
-//   return skills;
-// }
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const skills = loadSkillsFromMasterFile();
-//   renderSkills(skills);
-// });
-
-// function renderRoadmap(phases) {
-//   const roadmap = document.getElementById("roadmap");
-//   roadmap.innerHTML = "";
-
-//   phases.forEach((phase, index) => {
-
-//     const phaseDiv = document.createElement("div");
-//     phaseDiv.classList.add("phase");
-//     phaseDiv.innerText = `Phase ${index + 1}: ${phase}`;
-
-//     roadmap.appendChild(phaseDiv);
-
-//     if (index < phases.length - 1) {
-//       const arrow = document.createElement("div");
-//       arrow.classList.add("arrow");
-//       arrow.textContent = ">";
-//       roadmap.appendChild(arrow);
-//     }
-//   });
-// };
-
-// function addPhase(text) {
-//   phases.push(text);
-//   renderRoadmap(phases);
-// };
-
-// function renderStepsTree(steps) {
-//   const container = document.getElementById("steps-tree");
-
-//   container.innerHTML = steps
-//     .map((step, index) => `
-//       <div class="tree-node">
-//         <div class="circle"><p>${step}</p> </div>
-//       </div>
-//       ${index < steps.length - 1 ? '<div class="tree-line"></div>' : ''}
-//     `)
-//     .join("");
-// }
-
-// function createGraph(steps) {
-//   const tree = document.getElementById("steps-tree");
-//   const svg = document.getElementById("connections");
-
-//   // Clear previous nodes & lines
-//   tree.querySelectorAll(".node").forEach(n => n.remove());
-//   svg.innerHTML = "";
-
-//   const width = 900;
-//   const height = 440;
-//   const nodeSize = 120;
-
-//   const nodePositions = [];
-
-//   function isTooClose(x, y, positions, minDistance) {
-//     return positions.some(pos => {
-//       const dx = pos.x - x;
-//       const dy = pos.y - y;
-//       return Math.sqrt(dx * dx + dy * dy) < minDistance;
-//     });
-//   }
-
-//   steps.forEach(step => {
-//     const node = document.createElement("div"); // NEW element each time
-//     node.classList.add("node");
-//     node.innerHTML = step;
-
-//     let x, y;
-//     let attempts = 0;
-//     const maxAttempts = 100;
-
-//     do {
-//       x = Math.random() * (width - nodeSize);
-//       y = Math.random() * (height - nodeSize);
-//       attempts++;
-//     } while (
-//       isTooClose(x + nodeSize / 2, y + nodeSize / 2, nodePositions, 160) &&
-//       attempts < maxAttempts
-//     );
-
-//     node.style.left = `${x}px`;
-//     node.style.top = `${y}px`;
-
-//     tree.appendChild(node);
-
-//     nodePositions.push({
-//       x: x + nodeSize / 2,
-//       y: y + nodeSize / 2
-//     });
-//   });
-
-//   // Draw connecting lines
-//   // nodePositions.forEach((pos, index) => {
-//   //   if (index === 0) return;
-
-//   //   const prev = nodePositions[index - 1];
-
-//   //   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-
-//   //   line.setAttribute("x1", prev.x);
-//   //   line.setAttribute("y1", prev.y);
-//   //   line.setAttribute("x2", pos.x);
-//   //   line.setAttribute("y2", pos.y);
-//   //   line.setAttribute("stroke", "#4CAF50");
-//   //   line.setAttribute("stroke-width", "2");
-
-//   //   svg.appendChild(line);
-//   // });
-// };
-
-
-
-
-
-
-
-
-
-
-async function init() {
-  // generalSkills();
-  branchTemplate(users);
-
-  getJobs("developer");
-  // renderStepsTree(professionalSteps);
-  // createGraph(professionalSteps);
-  // renderRoadmap(phases);
-
-};
 
 window.onload = init;
