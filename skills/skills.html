@@ -8,7 +8,8 @@
     <link rel="icon" type="image/x-icon" href="./images/career_start.webp">
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/skills.css">
-
+    <script src="skills.js" type="module"></script>
+    
 </head>
 
 <body>
@@ -23,11 +24,13 @@
     </header>
     <main>
         <section id="search-section">
-            <form action="/search" method="GET" role="search">
-                <label for="search-input"></label>
-                <input type="search" id="search-input" name="q" placeholder="Job Search..." required>
-                <button type="submit">Search</button>
+            <form id="job-search-form" role="search">
+                <input type="search" id="search-input" placeholder="Job Search..." required>
+                <button type="submit" id="search-button">Search</button>
             </form>
+
+<ul class="job-list" id="job-list-container">
+    </ul>
         </section>
         <section>
             <ul class="job-list">

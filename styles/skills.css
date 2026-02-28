@@ -1,10 +1,13 @@
+/* --- Job Card Styles --- */
 .job {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 1rem;
   background: #fff;
   transition: box-shadow 150ms ease, border-color 150ms ease;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
 }
 
 .job:focus-within {
@@ -13,32 +16,54 @@
   outline: none;
 }
 
-/* small visual tweak for .job-list spacing */
+/* AI-Generated & Loading States */
+#job-list-container .job {
+  border-top: 3px solid #0b74de;
+}
+
+.job[id^="loading-"] {
+  border-left: 6px solid #0b74de;
+  background: #f9fafb;
+  opacity: 0.8;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* --- Layout & Containers --- */
+#search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+/* Master Width Alignment for Form and Lists */
+#job-search-form,
+#job-list-container,
 .job-list {
   list-style: none;
   padding: 0;
-  margin: 0 auto;
-  max-width: 900px; /* match form max-width */
+  width: 90%;
+  max-width: 850px;
+  margin: 1rem auto;
 }
 
-/* center the search section and size the form to 80% of the job width */
-#search-section {
+#job-search-form {
   display: flex;
+  gap: 10px;
   justify-content: center;
-  margin: 1rem 0;
 }
 
-#search-section form {
-  width: 80%;
-  max-width: 900px;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-/* input grows to fill available space; button keeps natural size */
+/* --- Search Input & Button --- */
 #search-input {
   flex: 1;
+  flex-grow: 1;
   padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -55,11 +80,11 @@
   font: inherit;
 }
 
-/* small responsive tweak */
 @media (max-width: 520px) {
-  #search-section form { width: 94%; }
+  #job-search-form, #search-section form { width: 94%; }
 }
 
+/* --- Skills Buttons & Containers --- */
 .skills-container {
   margin-top: 0.5rem;
 }
@@ -77,7 +102,6 @@
   display: inline-block;
 }
 
-/* button appearance for skill items */
 .skill-btn {
   appearance: none;
   -webkit-appearance: none;
@@ -87,7 +111,7 @@
   border-radius: 6px;
   cursor: pointer;
   font: inherit;
-  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  transition: all 120ms ease;
 }
 
 .skill-btn:focus {
@@ -95,36 +119,29 @@
   outline-offset: 2px;
 }
 
+/* Button States (Hover/Active) */
+.skill-btn:hover,
+.skill-btn:focus,
+.skill-btn:focus-visible,
 .skill-btn.active,
 .skill-btn[aria-pressed="true"] {
-  background: #0b74de;
-  color: #fff;
+  background-color: #0b74de;
+  color: #fff !important;
   border-color: #075aa1;
 }
 
-/* hover/focus border and plus match search blue */
-.skill-btn:hover,
-.skill-btn:focus,
-.skill-btn:focus-visible {
-  border-color: #0b74de;
-}
-
-/* show a plus sign at the start on hover/focus (blue) */
+/* Skill Button Plus Icon */
 .skill-btn::before {
   content: "+";
   display: inline-block;
   margin-right: 0.4rem;
-  opacity: 1;
-  transform: none;
-  transition: color 120ms ease, transform 120ms ease;
-  color: #6b7280; /* neutral default */
+  color: #6b7280;
   width: 0.8rem;
   text-align: center;
+  transition: color 120ms ease;
 }
 
-/* color the plus blue on hover/focus, keep layout stable */
 .skill-btn:hover::before,
-.skill-btn:focus::before,
-.skill-btn:focus-visible::before {
-  color: #0b74de;
+.skill-btn:focus::before {
+  color: white;
 }
