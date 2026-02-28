@@ -78,19 +78,34 @@ main {
     grid-template-columns: 75% 25%;
 }
 
-#template{
-    
-}
-
 #container{
     justify-items: center;
 }
 
 footer {
-    height: 50px;
-    margin-top: auto;
-    background-color: #5e799fc2;
+  margin-top: auto;
+  background-color: #5e799fc2;
+  color: #ffffff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
 
+/* GitHub link styling */
+.github-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 300;
+}
+
+.github-link:hover,
+.github-link:focus {
+  color: #e6eefc;
+  text-decoration: underline;
 }
 
 .tree-container {
