@@ -63,7 +63,6 @@
 /* --- Search Input & Button --- */
 #search-input {
   flex: 1;
-  flex-grow: 1;
   padding: 0.5rem 0.75rem;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -146,7 +145,7 @@
   color: white;
 }
 
-/* modal styling */
+/* --- Modal Styling --- */
 .skill-modal {
   display: none;
   position: fixed;
@@ -203,7 +202,7 @@
   color: #111;
 }
 
-/* modal form layout */
+/* Modal Form Layout */
 .skill-modal__content form {
   margin-top: 0.75rem;
   display: grid;
@@ -243,7 +242,6 @@
   resize: vertical;
 }
 
-/* form actions */
 .form-actions {
   display: flex;
   gap: 0.5rem;
@@ -267,155 +265,4 @@
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   cursor: pointer;
-}
-
-/* small tweak to keep dialog width comfortable */
-.skill-modal__dialog { max-width: 520px; }
-
-/* --- Job Card Styles --- */
-.job {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  background: #fff;
-  transition: box-shadow 150ms ease, border-color 150ms ease;
-  width: 100%;
-  margin-bottom: 1.5rem;
-  box-sizing: border-box;
-}
-
-.job:focus-within {
-  border-color: #0b74de;
-  box-shadow: 0 4px 12px rgba(11,116,222,0.12);
-  outline: none;
-}
-
-/* AI-Generated & Loading States */
-#job-list-container .job {
-  border-top: 3px solid #0b74de;
-}
-
-.job[id^="loading-"] {
-  border-left: 6px solid #0b74de;
-  background: #f9fafb;
-  opacity: 0.8;
-  animation: pulse 1.5s infinite ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
-}
-
-/* --- Layout & Containers --- */
-#search-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem 0;
-  width: 100%;
-}
-
-/* Master Width Alignment for Form and Lists */
-#job-search-form,
-#job-list-container,
-.job-list {
-  list-style: none;
-  padding: 0;
-  width: 90%;
-  max-width: 850px;
-  margin: 1rem auto;
-}
-
-#job-search-form {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-/* --- Search Input & Button --- */
-#search-input {
-  flex: 1;
-  flex-grow: 1;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font: inherit;
-}
-
-#search-section button[type="submit"] {
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  border: 1px solid #0b74de;
-  background: #0b74de;
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
-}
-
-@media (max-width: 520px) {
-  #job-search-form, #search-section form { width: 94%; }
-}
-
-/* --- Skills Buttons & Containers --- */
-.skills-container {
-  margin-top: 0.5rem;
-}
-
-.skills-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0.25rem 0 0 0;
-}
-
-.skills-list li {
-  display: inline-block;
-}
-
-.skill-btn {
-  appearance: none;
-  -webkit-appearance: none;
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font: inherit;
-  transition: all 120ms ease;
-}
-
-.skill-btn:focus {
-  outline: 3px solid rgba(11,116,222,0.16);
-  outline-offset: 2px;
-}
-
-/* Button States (Hover/Active) */
-.skill-btn:hover,
-.skill-btn:focus,
-.skill-btn:focus-visible,
-.skill-btn.active,
-.skill-btn[aria-pressed="true"] {
-  background-color: #0b74de;
-  color: #fff !important;
-  border-color: #075aa1;
-}
-
-/* Skill Button Plus Icon */
-.skill-btn::before {
-  content: "+";
-  display: inline-block;
-  margin-right: 0.4rem;
-  color: #6b7280;
-  width: 0.8rem;
-  text-align: center;
-  transition: color 120ms ease;
-}
-
-.skill-btn:hover::before,
-.skill-btn:focus::before {
-  color: white;
 }
