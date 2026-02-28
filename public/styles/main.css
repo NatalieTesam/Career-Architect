@@ -54,7 +54,7 @@ h6 {
 
 body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: radial-gradient(circle at top right, #e6f7ee, var(--bg) 60%);
+    background: radial-gradient(circle at top right, #e6f7ee, var(--surface-soft) 60%);
     color: var(--text-main);
     min-height: 100%;
     display: flex;
