@@ -1,0 +1,130 @@
+.job {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #fff;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.job:focus-within {
+  border-color: #0b74de;
+  box-shadow: 0 4px 12px rgba(11,116,222,0.12);
+  outline: none;
+}
+
+/* small visual tweak for .job-list spacing */
+.job-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 900px; /* match form max-width */
+}
+
+/* center the search section and size the form to 80% of the job width */
+#search-section {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+#search-section form {
+  width: 80%;
+  max-width: 900px;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* input grows to fill available space; button keeps natural size */
+#search-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+#search-section button[type="submit"] {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #0b74de;
+  background: #0b74de;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* small responsive tweak */
+@media (max-width: 520px) {
+  #search-section form { width: 94%; }
+}
+
+.skills-container {
+  margin-top: 0.5rem;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0 0;
+}
+
+.skills-list li {
+  display: inline-block;
+}
+
+/* button appearance for skill items */
+.skill-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.skill-btn:focus {
+  outline: 3px solid rgba(11,116,222,0.16);
+  outline-offset: 2px;
+}
+
+.skill-btn.active,
+.skill-btn[aria-pressed="true"] {
+  background: #0b74de;
+  color: #fff;
+  border-color: #075aa1;
+}
+
+/* hover/focus border and plus match search blue */
+.skill-btn:hover,
+.skill-btn:focus,
+.skill-btn:focus-visible {
+  border-color: #0b74de;
+}
+
+/* show a plus sign at the start on hover/focus (blue) */
+.skill-btn::before {
+  content: "+";
+  display: inline-block;
+  margin-right: 0.4rem;
+  opacity: 1;
+  transform: none;
+  transition: color 120ms ease, transform 120ms ease;
+  color: #6b7280; /* neutral default */
+  width: 0.8rem;
+  text-align: center;
+}
+
+/* color the plus blue on hover/focus, keep layout stable */
+.skill-btn:hover::before,
+.skill-btn:focus::before,
+.skill-btn:focus-visible::before {
+  color: #0b74de;
+}

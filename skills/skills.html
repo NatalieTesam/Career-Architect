@@ -7,6 +7,7 @@
     <title>Skills</title>
     <link rel="icon" type="image/x-icon" href="./images/career_start.webp">
     <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/skills.css">
 
 </head>
 
@@ -21,7 +22,6 @@
         </nav>
     </header>
     <main>
-        <h1>Skills</h1>
         <section id="search-section">
             <form action="/search" method="GET" role="search">
                 <label for="search-input"></label>
@@ -40,16 +40,15 @@
                         write clean code, and participate in code reviews.
                     </p>
 
-                    <h3>Skills Required:</h3>
-                    <ul>
-                        <li>JavaScript or Python</li>
-                        <li>Basic understanding of data structures</li>
-                        <li>Git version control</li>
-                        <li>Problem-solving skills</li>
-                    </ul>
-                    <a href="../outline/outline.html" class="learn-button">
-                        Start Learning
-                    </a>
+                    <div class="skills-container">
+                        <h3>Skills Required:</h3>
+                        <ul class="skills-list">
+                            <li><button type="button" class="skill-btn" data-skill="js-python" aria-pressed="false">JavaScript or Python</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="data-structures" aria-pressed="false">Basic understanding of data structures</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="git" aria-pressed="false">Git version control</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="problem-solving" aria-pressed="false">Problem-solving skills</button></li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li class="job">
@@ -60,16 +59,15 @@
                         and integrate APIs into existing systems.
                     </p>
 
-                    <h3>Skills Required:</h3>
-                    <ul>
-                        <li>HTML & CSS</li>
-                        <li>JavaScript</li>
-                        <li>Responsive design principles</li>
-                        <li>Basic API knowledge</li>
-                    </ul>
-                    <a href="../outline/outline.html" class="learn-button">
-                        Start Learning
-                    </a>
+                    <div class="skills-container">
+                        <h3>Skills Required:</h3>
+                        <ul class="skills-list">
+                            <li><button type="button" class="skill-btn" data-skill="html-css" aria-pressed="false">HTML &amp; CSS</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="javascript" aria-pressed="false">JavaScript</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="responsive" aria-pressed="false">Responsive design principles</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="api" aria-pressed="false">Basic API knowledge</button></li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li class="job">
@@ -80,16 +78,15 @@
                         to support business decision-making.
                     </p>
 
-                    <h3>Skills Required:</h3>
-                    <ul>
-                        <li>Python or R</li>
-                        <li>SQL</li>
-                        <li>Data visualization tools</li>
-                        <li>Attention to detail</li>
-                    </ul>
-                    <a href="../outline/outline.html" class="learn-button">
-                        Start Learning
-                    </a>
+                    <div class="skills-container">
+                        <h3>Skills Required:</h3>
+                        <ul class="skills-list">
+                            <li><button type="button" class="skill-btn" data-skill="python-r" aria-pressed="false">Python or R</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="sql" aria-pressed="false">SQL</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="viz" aria-pressed="false">Data visualization tools</button></li>
+                            <li><button type="button" class="skill-btn" data-skill="attention" aria-pressed="false">Attention to detail</button></li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </section>
