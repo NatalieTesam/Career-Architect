@@ -1,6 +1,9 @@
 @import url("./outline.css");
 @import url("./skills.css");
 @import url("./roadmap.css");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 /* ============================= */
 /* Design System */
@@ -15,6 +18,26 @@
     --text-main: #1f2937;
     --text-muted: #6b7280;
     --border-soft: #e5efe9;
+}
+
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
 /* Reset */
