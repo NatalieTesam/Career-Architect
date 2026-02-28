@@ -24,11 +24,13 @@ function branchTemplate(users) {
   // container.innerHTML = html;
 }
 
-async function getJobs(role) {
+async function getJobs(role = "developer") {
   const url = `/api/jobs?role=${encodeURIComponent(role)}&results_per_page=8`;
 
   try {
     const response = await fetch(url);
+    if (!response.ok) throw new Error("Network error");
+
     const jobs = await response.json();
     displayJobs(jobs);
 
@@ -36,17 +38,16 @@ async function getJobs(role) {
   } catch (error) {
     console.error("Error fetching jobs:", error);
     document.getElementById('jobs').innerHTML = '<p>Could not load jobs at this time.</p>';
-    return [];
   }
-
-  document.getElementById("search-button").addEventListener("click", () => {
-    const roleInput = document.getElementById("role-input").value.trim();
-    if (roleInput) {
-      getJobs(roleInput);
-    }
-  });
-
 };
+
+document.getElementById("search-button").addEventListener("click", () => {
+  const roleInput = document.getElementById("role-input").value.trim();
+  if (roleInput) {
+    getJobs(roleInput);
+  }
+});
+
 
 function displayJobs(jobs) {
   const container = document.getElementById("jobs");
@@ -70,8 +71,38 @@ const professionalSteps = [
   "Grow LinkedIn Connections",
   "Attend Web Dev Meetups",
   "Conduct Informational Interview",
-  "Apply to Targeted Roles ~ hardwork, cooperation"
+  "Apply to Targeted Roles ~ hardwork, cooperation",
+  "Learn Core Web Development",
+  "Build 2 Portfolio Projects",
+  "Optimize LinkedIn & Resume",
 ];
+
+
+function renderRoadmap(phases) {
+  const container = document.getElementById("roadmap");
+  container.innerHTML = "";
+
+  phases.forEach((phase, index) => {
+
+    const phaseDiv = document.createElement("div");
+    phaseDiv.classList.add("phase");
+    phaseDiv.innerText = `Phase ${index + 1}: ${phase}`;
+
+    container.appendChild(phaseDiv);
+
+    if (index < phases.length - 1) {
+      const arrow = document.createElement("div");
+      arrow.classList.add("arrow");
+      arrow.innerText = ">";
+      container.appendChild(arrow);
+    }
+  });
+};
+
+function addPhase(text) {
+  phases.push(text);
+  renderRoadmap(phases);
+};
 
 // function renderStepsTree(steps) {
 //   const container = document.getElementById("steps-tree");
@@ -86,75 +117,75 @@ const professionalSteps = [
 //     .join("");
 // }
 
-function createGraph(steps) {
-  const tree = document.getElementById("steps-tree");
-  const svg = document.getElementById("connections");
+// function createGraph(steps) {
+//   const tree = document.getElementById("steps-tree");
+//   const svg = document.getElementById("connections");
 
-  // Clear previous nodes & lines
-  tree.querySelectorAll(".node").forEach(n => n.remove());
-  svg.innerHTML = "";
+//   // Clear previous nodes & lines
+//   tree.querySelectorAll(".node").forEach(n => n.remove());
+//   svg.innerHTML = "";
 
-  const width = 900;
-  const height = 460;
-  const nodeSize = 120;
+//   const width = 900;
+//   const height = 440;
+//   const nodeSize = 120;
 
-  const nodePositions = [];
+//   const nodePositions = [];
 
-  function isTooClose(x, y, positions, minDistance) {
-    return positions.some(pos => {
-      const dx = pos.x - x;
-      const dy = pos.y - y;
-      return Math.sqrt(dx * dx + dy * dy) < minDistance;
-    });
-  }
+//   function isTooClose(x, y, positions, minDistance) {
+//     return positions.some(pos => {
+//       const dx = pos.x - x;
+//       const dy = pos.y - y;
+//       return Math.sqrt(dx * dx + dy * dy) < minDistance;
+//     });
+//   }
 
-  steps.forEach(step => {
-    const node = document.createElement("div"); // ✅ NEW element each time
-    node.classList.add("node");
-    node.innerHTML = step;
+//   steps.forEach(step => {
+//     const node = document.createElement("div"); // NEW element each time
+//     node.classList.add("node");
+//     node.innerHTML = step;
 
-    let x, y;
-    let attempts = 0;
-    const maxAttempts = 100;
+//     let x, y;
+//     let attempts = 0;
+//     const maxAttempts = 100;
 
-    do {
-      x = Math.random() * (width - nodeSize);
-      y = Math.random() * (height - nodeSize);
-      attempts++;
-    } while (
-      isTooClose(x + nodeSize / 2, y + nodeSize / 2, nodePositions, 160) &&
-      attempts < maxAttempts
-    );
+//     do {
+//       x = Math.random() * (width - nodeSize);
+//       y = Math.random() * (height - nodeSize);
+//       attempts++;
+//     } while (
+//       isTooClose(x + nodeSize / 2, y + nodeSize / 2, nodePositions, 160) &&
+//       attempts < maxAttempts
+//     );
 
-    node.style.left = `${x}px`;
-    node.style.top = `${y}px`;
+//     node.style.left = `${x}px`;
+//     node.style.top = `${y}px`;
 
-    tree.appendChild(node);
+//     tree.appendChild(node);
 
-    nodePositions.push({
-      x: x + nodeSize / 2,
-      y: y + nodeSize / 2
-    });
-  });
+//     nodePositions.push({
+//       x: x + nodeSize / 2,
+//       y: y + nodeSize / 2
+//     });
+//   });
 
-  // Draw connecting lines
-  // nodePositions.forEach((pos, index) => {
-  //   if (index === 0) return;
+//   // Draw connecting lines
+//   // nodePositions.forEach((pos, index) => {
+//   //   if (index === 0) return;
 
-  //   const prev = nodePositions[index - 1];
+//   //   const prev = nodePositions[index - 1];
 
-  //   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+//   //   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-  //   line.setAttribute("x1", prev.x);
-  //   line.setAttribute("y1", prev.y);
-  //   line.setAttribute("x2", pos.x);
-  //   line.setAttribute("y2", pos.y);
-  //   line.setAttribute("stroke", "#4CAF50");
-  //   line.setAttribute("stroke-width", "2");
+//   //   line.setAttribute("x1", prev.x);
+//   //   line.setAttribute("y1", prev.y);
+//   //   line.setAttribute("x2", pos.x);
+//   //   line.setAttribute("y2", pos.y);
+//   //   line.setAttribute("stroke", "#4CAF50");
+//   //   line.setAttribute("stroke-width", "2");
 
-  //   svg.appendChild(line);
-  // }.);
-};
+//   //   svg.appendChild(line);
+//   // });
+// };
 
 
 
@@ -171,7 +202,8 @@ async function init() {
 
   getJobs("developer");
   // renderStepsTree(professionalSteps);
-  createGraph(professionalSteps);
+  // createGraph(professionalSteps);
+  renderRoadmap(phases);
 
 };
 
