@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             { "name": "Phase 1 Title", "tasks": ["Specific Task 1", "Specific Task 2"] }
                           ]
                         }
-                        Create exactly 5 phases.` 
+                        Create exactly 3 phases.` 
                     },
                     { 
                         role: "user", 
