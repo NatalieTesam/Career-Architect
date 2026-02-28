@@ -22,7 +22,7 @@ body {
 
 header {
     background-color: #5e799fc2;
-    padding: 20px 30px;
+    padding: 10px 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-bottom: 30px;
@@ -63,17 +63,27 @@ nav {
 
 main {
     flex: 1;
+}
 
+.job-link{
+    font-size: .7em;
+}
+
+#tree{
+    border-right: 1px solid rgba(176, 176, 176, 0.61);
 }
 
 #home-page{
     display: grid;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: 75% 25%;
 }
 
 #template{
-    border-right: 1px solid grey;
     
+}
+
+#container{
+    justify-items: center;
 }
 
 footer {

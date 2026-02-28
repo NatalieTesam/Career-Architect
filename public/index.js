@@ -21,23 +21,23 @@ function branchTemplate(users) {
     .join("");
 
   const container = document.getElementById("template");
-  container.innerHTML = html;
+  // container.innerHTML = html;
 }
 
-// async function getJobs(role) {
-//   const url = `https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=${idKey}&app_key=${appKey}&what=${encodeURIComponent(role)}&results_per_page=3`;
+async function getJobs(role) {
+  const url = `/api/jobs?role=${encodeURIComponent(role)}&results_per_page=5`;
 
-//   try {
-//     const response = await fetch(url);
-//     const jobs = await response.json();
-//     displayJobs(jobs);
+  try {
+    const response = await fetch(url);
+    const jobs = await response.json();
+    displayJobs(jobs);
 
-//     // return jobs.results;
-//   } catch (error) {
-//     console.error("Error fetching jobs:", error);
-//     return [];
-//   }
-// };
+    // return jobs.results;
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    return [];
+  }
+};
 
 function displayJobs(jobs) {
   const container = document.getElementById("jobs");
@@ -50,7 +50,7 @@ function displayJobs(jobs) {
     <div class="job">
       <h3>${job.title}</h3>
       <p>${job.company.display_name}</p>
-      <a href="${job.redirect_url}" target="_blank">View Job</a>
+      <a href="${job.redirect_url}" target="_blank" class="job-link">View Job</a>
     </div>
   `).join("");
 }
@@ -59,7 +59,7 @@ async function init(){
   // generalSkills();
   branchTemplate(users);
 
-  // getJobs("developer");
+  getJobs("developer");
 
 };
 
