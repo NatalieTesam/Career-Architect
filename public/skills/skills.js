@@ -1,50 +1,51 @@
 import { loadHeaderFooter } from "../scripts/utils.mjs";
 
+// Keep this commented out if you aren't logged in during testing
 const token = localStorage.getItem("token");
-
+/*
 if (!token) {
   window.location.href = "../login/login.html";
 }
+*/
 
 loadHeaderFooter();
 
-// 1. Define openModal in the global scope so renderJobCard can see it
 let openModal; 
 
 (function () {
     const modal = document.getElementById('skill-modal');
     const titleEl = document.getElementById('skill-modal-title');
-    const closeBtn = modal.querySelector('.skill-modal__close');
     const form = document.getElementById('skill-form');
     const skillIdInput = document.getElementById('skill-id');
-    const durationNumber = document.getElementById('duration-number');
-    const durationUnit = document.getElementById('duration-unit');
-    const difficulty = document.getElementById('difficulty');
-    const otherInfo = document.getElementById('other-info');
+    
+    // These are the ELEMENTS
+    const durationNumEl = document.getElementById('duration-number');
+    const durationUnitEl = document.getElementById('duration-unit');
+    const difficultyEl = document.getElementById('difficulty');
+    const otherInfoEl = document.getElementById('other-info');
+    
     const btnCancel = modal.querySelector('.btn-cancel');
     let lastActive = null;
 
     function storageKey(id) { return `skill:${id}`; }
 
-    // Assign the function to the outer variable
     openModal = function(skillId, skillLabel, trigger) {
         titleEl.textContent = skillLabel || skillId;
         skillIdInput.value = skillId;
 
-        // Try load saved data from localStorage
         try {
             const raw = localStorage.getItem(storageKey(skillId));
             if (raw) {
                 const data = JSON.parse(raw);
-                durationNumber.value = data.durationNumber ?? 1;
-                durationUnit.value = data.durationUnit ?? 'hours';
-                difficulty.value = data.difficulty ?? 'beginner';
-                otherInfo.value = data.notes ?? '';
+                durationNumEl.value = data.durationNumber ?? 1;
+                durationUnitEl.value = data.durationUnit ?? 'hours';
+                difficultyEl.value = data.difficulty ?? 'beginner';
+                otherInfoEl.value = data.notes ?? '';
             } else {
-                durationNumber.value = 1;
-                durationUnit.value = 'hours';
-                difficulty.value = 'beginner';
-                otherInfo.value = '';
+                durationNumEl.value = 1;
+                durationUnitEl.value = 'hours';
+                difficultyEl.value = 'beginner';
+                otherInfoEl.value = '';
             }
         } catch (e) {
             console.error("Local storage error", e);
@@ -53,7 +54,7 @@ let openModal;
         modal.setAttribute('aria-hidden', 'false');
         modal.classList.add('open');
         lastActive = trigger || null;
-        durationNumber.focus();
+        durationNumEl.focus();
         document.addEventListener('keydown', onKey);
     };
 
@@ -69,65 +70,49 @@ let openModal;
         if (e.key === 'Escape') closeModal();
     }
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
-    
-      const skillTitle = document.getElementById("skill-modal-title").innerText;
-  
-      const payload = {
-        skill: titleEl.textContent,
-        durationNumber: durationNumber.value,
-        durationUnit: durationUnit.value,
-        duration: `${durationNumber.value} ${durationUnit.value}`, 
-        difficulty: difficulty.value,
-        notes: otherInfo.value.trim(),
-        savedAt: new Date().toISOString()
-    };
-  
-     // SAVE DATA TO SESSION
-      sessionStorage.setItem('learningPlan', JSON.stringify(payload));
-    
-      const durationNumber = document.getElementById("duration-number").value;
-      const durationUnit = document.getElementById("duration-unit").value;
-      const difficulty = document.getElementById("difficulty").value;
-      const notes = document.getElementById("other-info").value;
-    
-  
-        // Save to localStorage for persistence
-        try {
-            const id = skillIdInput.value || Date.now();
-            localStorage.setItem(storageKey(id), JSON.stringify(payload));
-        } catch (err) {
-            console.error('Could not save to localStorage', err);
-        }
-  
-  
+      console.log("Form submitted!");
+
       try {
-        const res = await fetch("/api/skills", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            skill_name: skillTitle
-          })
-        });
-    
-        const data = await res.json();
-        console.log("Saved skill:", data);
-    
-        alert("Skill added to your profile!");
+          // 1. Capture the data
+          const payload = {
+            skill: titleEl.textContent,
+            durationNumber: durationNumEl.value,
+            durationUnit: durationUnitEl.value,
+            duration: `${durationNumEl.value} ${durationUnitEl.value}`, 
+            difficulty: difficultyEl.value,
+            notes: otherInfoEl.value.trim(),
+            savedAt: new Date().toISOString()
+          };
+      
+          // 2. Save to Session
+          sessionStorage.setItem('learningPlan', JSON.stringify(payload));
+          console.log("Session saved:", payload);
+        
+          // 3. Save to LocalStorage
+          const id = skillIdInput.value || Date.now();
+          localStorage.setItem(storageKey(id), JSON.stringify(payload));
+      
+          closeModal();
+          
+          // 4. THE REDIRECT (with fallback check)
+          console.log("Attempting redirect...");
+          
+          // Try relative path first
+          window.location.href = '../outline/outline.html';
+
+          // Fallback: If it doesn't move in 500ms, try absolute-style path
+          setTimeout(() => {
+              window.location.href = '/outline/outline.html';
+          }, 500);
+
       } catch (err) {
-        console.error(err);
+          console.error("Critical Submit Error:", err);
+          alert("Save failed: " + err.message);
       }
-  
-      closeModal();
-      // REDIRECT AFTER SAVING
-      window.location.href = '../outline/outline.html';
     });
 
-    // Delegation for skill buttons
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('.skill-btn');
         if (btn) {
@@ -195,12 +180,14 @@ searchForm.addEventListener('submit', async (e) => {
         const [description, skillsPart] = rawText.split('|');
         const skills = skillsPart.split(',').map(s => s.trim()).filter(s => s.length > 0).slice(0, 5);
 
-        document.getElementById(`loading-${loadingId}`).remove();
+        const loadEl = document.getElementById(`loading-${loadingId}`);
+        if (loadEl) loadEl.remove();
         renderJobCard(query, description.trim(), skills);
 
     } catch (err) {
         console.error(err);
-        document.getElementById(`loading-${loadingId}`).innerHTML = "<h2>Error</h2><p>Fedora connection timed out.</p>";
+        const loadEl = document.getElementById(`loading-${loadingId}`);
+        if (loadEl) loadEl.innerHTML = "<h2>Error</h2><p>Fedora connection timed out.</p>";
     }
 });
 
@@ -227,22 +214,16 @@ function renderJobCard(title, description, skills) {
 
     jobListContainer.prepend(jobLi);
 
-    // --- THE FIX: Make AI buttons open the modal ---
     jobLi.querySelectorAll('.skill-btn').forEach(btn => {
       btn.onclick = (e) => {
           e.preventDefault();
           const skillLabel = btn.innerText.trim();
-          // This calls the openModal function from your top section
-          // We use sessionStorage so the next page knows what we're learning
           sessionStorage.setItem('selectedSkill', skillLabel);
           sessionStorage.setItem('selectedJob', title);
           
-          // Trigger the modal (global access check)
           if (typeof openModal === "function") {
               openModal(skillLabel, skillLabel, btn);
           } else {
-              // If openModal is trapped in the IIFE, we trigger a click 
-              // on the document listener you already have.
               btn.dispatchEvent(new Event('click', { bubbles: true }));
           }
       };
