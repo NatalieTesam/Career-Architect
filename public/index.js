@@ -63,46 +63,152 @@ function displayJobs(jobs) {
       <a href="${job.redirect_url}" target="_blank" class="job-link">View Job</a>
     </div>
   `).join("");
-}
+};
 
+function getMasterProgress() {
+  const raw = localStorage.getItem("career_progress_file");
 
-const professionalSteps = [
-  "Optimize LinkedIn Profile",
-  "Grow LinkedIn Connections",
-  "Attend Web Dev Meetups",
-  "Conduct Informational Interview",
-  "Apply to Targeted Roles ~ hardwork, cooperation",
-  "Learn Core Web Development",
-  "Build 2 Portfolio Projects",
-  "Optimize LinkedIn & Resume",
-];
+  if (!raw) {
+    console.log("No master file found");
+    return null;
+  }
 
+  return JSON.parse(raw);
+};
 
-function renderRoadmap(phases) {
-  const container = document.getElementById("roadmap");
+// document.addEventListener("DOMContentLoaded", () => {
+//   const data = getMasterProgress();
+//   console.log("Loaded data:", data);
+// });
+
+function extractSkills(masterFile) {
+  if (!masterFile || !masterFile.allSkills) return [];
+
+  return Object.values(masterFile.allSkills).map(skill => ({
+    title: skill.skillTitle,
+    phases: skill.completedPhases.map(p => p.phaseTitle)
+  }));
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  const master = getMasterProgress();
+  const skills = extractSkills(master);
+
+  console.log("Extracted skills:", skills);
+});
+
+function renderSkills(skills) {
+  const container = document.getElementById("skills-container");
   container.innerHTML = "";
 
-  phases.forEach((phase, index) => {
+  skills.forEach(skill => {
+    const skillTitle = document.createElement("h2");
+    skillTitle.innerText = skill.title;
+    container.appendChild(skillTitle);
 
-    const phaseDiv = document.createElement("div");
-    phaseDiv.classList.add("phase");
-    phaseDiv.innerText = `Phase ${index + 1}: ${phase}`;
+    const roadmap = document.createElement("div");
+    roadmap.style.display = "flex";
+    roadmap.style.gap = "20px";
+    roadmap.style.marginBottom = "40px";
 
-    container.appendChild(phaseDiv);
+    skill.phases.forEach((phase, index) => {
 
-    if (index < phases.length - 1) {
-      const arrow = document.createElement("div");
-      arrow.classList.add("arrow");
-      arrow.innerText = ">";
-      container.appendChild(arrow);
-    }
+      const box = document.createElement("div");
+      box.innerText = `${phase}`;
+      box.style.padding = "15px";
+      box.style.background = "#fff";
+      box.style.borderRadius = "8px";
+      box.style.boxShadow = "0 4px 10px rgba(0,0,0,0.08)";
+
+      roadmap.appendChild(box);
+
+      if (index < skill.phases.length - 1) {
+        const arrow = document.createElement("div");
+        arrow.innerText = ">";
+        arrow.style.fontSize = "24px";
+        arrow.style.alignSelf = "center";
+        roadmap.appendChild(arrow);
+      }
+    });
+
+    container.appendChild(roadmap);
   });
 };
 
-function addPhase(text) {
-  phases.push(text);
-  renderRoadmap(phases);
-};
+document.addEventListener("DOMContentLoaded", () => {
+  const master = getMasterProgress();
+  const skills = extractSkills(master);
+  renderSkills(skills);
+});
+
+
+
+// let skills = [
+//   {
+//     title: "Informational Interviews",
+//     phases: [
+//       "Research professionals in your field",
+//       "Send 5 outreach messages",
+//       "Schedule 2 calls",
+//       "Follow up and thank them"
+//     ]
+//   },
+//   {
+//     title: "LinkedIn Optimization",
+//     phases: [
+//       "Update headline",
+//       "Rewrite summary",
+//       "Add 5 new connections",
+//       "Request 2 recommendations"
+//     ]
+//   }
+// ];
+
+// function loadSkillsFromMasterFile() {
+//   const raw = localStorage.getItem("career_progress_file");
+
+//   if (!raw) return [];
+
+//   const masterFile = JSON.parse(raw);
+
+//   const skills = Object.values(masterFile.allSkills).map(skill => ({
+//     title: skill.skillTitle,
+//     phases: skill.completedPhases.map(phase => phase.phaseTitle)
+//   }));
+
+//   return skills;
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const skills = loadSkillsFromMasterFile();
+//   renderSkills(skills);
+// });
+
+// function renderRoadmap(phases) {
+//   const roadmap = document.getElementById("roadmap");
+//   roadmap.innerHTML = "";
+
+//   phases.forEach((phase, index) => {
+
+//     const phaseDiv = document.createElement("div");
+//     phaseDiv.classList.add("phase");
+//     phaseDiv.innerText = `Phase ${index + 1}: ${phase}`;
+
+//     roadmap.appendChild(phaseDiv);
+
+//     if (index < phases.length - 1) {
+//       const arrow = document.createElement("div");
+//       arrow.classList.add("arrow");
+//       arrow.textContent = ">";
+//       roadmap.appendChild(arrow);
+//     }
+//   });
+// };
+
+// function addPhase(text) {
+//   phases.push(text);
+//   renderRoadmap(phases);
+// };
 
 // function renderStepsTree(steps) {
 //   const container = document.getElementById("steps-tree");
@@ -203,7 +309,7 @@ async function init() {
   getJobs("developer");
   // renderStepsTree(professionalSteps);
   // createGraph(professionalSteps);
-  renderRoadmap(phases);
+  // renderRoadmap(phases);
 
 };
 
