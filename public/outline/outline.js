@@ -1,15 +1,11 @@
 import { loadHeaderFooter } from "../scripts/utils.mjs";
 
-
-
 const FEDORA_IP = "100.94.140.36"; 
 const API_URL = `http://${FEDORA_IP}:1234/v1/chat/completions`;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadHeaderFooter();
     const rawData = sessionStorage.getItem('learningPlan');
-    
-    
 
     // Safety check for session storage
     if (!rawData) {
@@ -101,6 +97,41 @@ function renderRoadmap(data) {
     });
 
     setupProgressLogic();
+}
+
+// --- NEW: Master Save Logic (Append or Create) ---
+function saveToMasterProgress() {
+    let masterFile = localStorage.getItem('career_progress_file');
+    
+    if (!masterFile) {
+        masterFile = { lastUpdated: new Date().toISOString(), allSkills: {} };
+    } else {
+        masterFile = JSON.parse(masterFile);
+    }
+
+    const rawData = sessionStorage.getItem('learningPlan');
+    if (!rawData) return;
+    const planData = JSON.parse(rawData);
+    const skillName = planData.skill;
+
+    if (!masterFile.allSkills[skillName]) {
+        masterFile.allSkills[skillName] = {
+            skillTitle: skillName,
+            completedPhases: []
+        };
+    }
+
+    const currentlyChecked = Array.from(document.querySelectorAll('.phase-card'))
+        .filter(card => card.querySelector('.phase-check').checked)
+        .map(card => ({
+            phaseTitle: card.querySelector('h3').innerText,
+            tasks: Array.from(card.querySelectorAll('li')).map(li => li.innerText.replace('> ', '')),
+            timestamp: new Date().toLocaleString()
+        }));
+
+    masterFile.allSkills[skillName].completedPhases = currentlyChecked;
+    masterFile.lastUpdated = new Date().toISOString();
+    localStorage.setItem('career_progress_file', JSON.stringify(masterFile, null, 2));
 }
 
 async function initStreamingChat() {
@@ -196,6 +227,9 @@ function setupProgressLogic() {
         if (progress) progress.max = total;
         if (percent) percent.textContent = `${Math.ceil((checked / total) * 100)}%`;
         if (text) text.textContent = `${checked} / ${total}`;
+        
+        // Trigger the Master Save every time a box is toggled
+        saveToMasterProgress();
     }
 
     checkboxes.forEach(cb => cb.addEventListener('change', update));
