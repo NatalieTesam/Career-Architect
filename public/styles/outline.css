@@ -1,0 +1,39 @@
+.skill-checklist {
+			border: 1px solid #e6e6e6;
+			border-radius: 10px;
+			padding: 0.75rem;
+			background: #fff;
+		}
+
+/* ...existing code ... */
+
+.skill-checklist ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.skill-checklist li {
+  margin-bottom: 0.5rem;
+}
+
+.skill-checklist label {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+  color: #111827;
+}
+
+.skill-checklist label:hover {
+  background: #f0f6ff;
+  color: #0b74de;
+}
+
+.skill-checklist input[type="checkbox"] {
+  margin-right: 0.6rem;
+  vertical-align: middle;
+}
+
+/* ...existing code ... */
