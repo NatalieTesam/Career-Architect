@@ -36,7 +36,7 @@ export async function loadHeaderFooter() {
     }
 
     const html = await response.text();
-    headerElement.innerHTML = html;
+    footerElement.innerHTML = html;
 
   } catch (error) {
     console.error("Error loading footer:", error);
