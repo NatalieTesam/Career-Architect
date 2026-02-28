@@ -1,19 +1,6 @@
 const FEDORA_IP = "100.94.140.36"; 
 const API_URL = `http://${FEDORA_IP}:1234/v1/chat/completions`;
 
-const users = [
-  {
-    id: 1,
-    name: "John",
-    skills: ["React", "Node.js", "TypeScript"]
-  },
-  {
-    id: 2,
-    name: "Sarah",
-    skills: ["Python", "Django"]
-  }
-];
-
 // --- DATA UTILITIES ---
 
 function getMasterProgress() {
@@ -190,7 +177,6 @@ async function generateResumeBullets() {
 
 async function init() {
   // 1. Run Legacy Functions
-  branchTemplate(users);
   getJobs("developer");
 
   // 2. Load and Render Visual Roadmap
