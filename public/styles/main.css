@@ -141,11 +141,12 @@ nav a:hover::after {
 
 /* Left Panel */
 #left-side {
-    background: radial-gradient(circle at top right, #e6f7ee, var(--border-soft) 60%);
+    /* background: radial-gradient(circle at top right, #e6f7ee, var(--bg) 90%); */
+    background-color: #b6c2d0b9;
     border-radius: 18px;
     padding: 20px;
     box-shadow:
-        0 10px 30px var(--primary-glow);
+        0 10px 15px var(--primary-glow);
     border: 1px solid var(--border-soft);
     display: flex;
     flex-direction: column;
