@@ -81,20 +81,41 @@ function createGraph(steps) {
   const tree = document.getElementById("steps-tree");
   const svg = document.getElementById("connections");
 
-  const width = 950;
-  const height = 480;
+  // Clear previous nodes & lines
+  tree.querySelectorAll(".node").forEach(n => n.remove());
+  svg.innerHTML = "";
 
+  const width = 900;
+  const height = 460;
   const nodeSize = 120;
+
   const nodePositions = [];
 
-  steps.forEach((step, index) => {
-    const node = document.getElementById("node-html");
+  function isTooClose(x, y, positions, minDistance) {
+    return positions.some(pos => {
+      const dx = pos.x - x;
+      const dy = pos.y - y;
+      return Math.sqrt(dx * dx + dy * dy) < minDistance;
+    });
+  }
+
+  steps.forEach(step => {
+    const node = document.createElement("div"); // ✅ NEW element each time
     node.classList.add("node");
     node.innerHTML = step;
 
-    // Random position (with padding so it doesn't overflow)
-    const x = Math.random() * (width - nodeSize);
-    const y = Math.random() * (height - nodeSize);
+    let x, y;
+    let attempts = 0;
+    const maxAttempts = 100;
+
+    do {
+      x = Math.random() * (width - nodeSize);
+      y = Math.random() * (height - nodeSize);
+      attempts++;
+    } while (
+      isTooClose(x + nodeSize / 2, y + nodeSize / 2, nodePositions, 160) &&
+      attempts < maxAttempts
+    );
 
     node.style.left = `${x}px`;
     node.style.top = `${y}px`;
@@ -102,29 +123,33 @@ function createGraph(steps) {
     tree.appendChild(node);
 
     nodePositions.push({
-      x: x + nodeSize / 2, // center of circle
+      x: x + nodeSize / 2,
       y: y + nodeSize / 2
     });
   });
 
-  // Draw lines between nodes (sequential connection)
-  nodePositions.forEach((pos, index) => {
-    if (index === 0) return;
+  // Draw connecting lines
+  // nodePositions.forEach((pos, index) => {
+  //   if (index === 0) return;
 
-    const prev = nodePositions[index - 1];
+  //   const prev = nodePositions[index - 1];
 
-    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  //   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-    line.setAttribute("x1", prev.x);
-    line.setAttribute("y1", prev.y);
-    line.setAttribute("x2", pos.x);
-    line.setAttribute("y2", pos.y);
-    line.setAttribute("stroke", "#4CAF50");
-    line.setAttribute("stroke-width", "2");
+  //   line.setAttribute("x1", prev.x);
+  //   line.setAttribute("y1", prev.y);
+  //   line.setAttribute("x2", pos.x);
+  //   line.setAttribute("y2", pos.y);
+  //   line.setAttribute("stroke", "#4CAF50");
+  //   line.setAttribute("stroke-width", "2");
 
-    svg.appendChild(line);
-  });
-}
+  //   svg.appendChild(line);
+  // });
+};
+
+
+
+
 
 
 
