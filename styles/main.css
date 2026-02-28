@@ -26,25 +26,39 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-bottom: 30px;
+    display: flex;
+
+
+    h1 {
+        color: white;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    #logo {
+        width: 90px;
+        border-radius: 50%;
+    }
 }
 
-header h1 {
-    color: white;
-    font-size: 24px;
-    font-weight: 600;
-}
 
-nav a {
-    text-decoration: none;
-    margin-right: 20px;
-    color: #ffffff;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
+nav {
+    margin-left: 50px;
+    align-self: center;
 
-nav a:hover {
-    color: black;
-    background-color: #5e799fc2;
+    a {
+        text-decoration: none;
+        margin-right: 20px;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 1.2em;
+        transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+        color: black;
+        background-color: #5e799fc2;
+    }
 }
 
 main {
