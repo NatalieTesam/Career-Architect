@@ -10,7 +10,7 @@ export async function loadHeaderFooter() {
   }
 
   try {
-    const response = await fetch("/partials/header.html");
+    const response = await fetch("../partials/header.html");
 
     if (!response.ok) {
       throw new Error("Failed to load header partial.");
