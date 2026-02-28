@@ -1,13 +1,13 @@
 :root {
-    --bg: #f6fbf8;
+    --bg: #D4E0ED;;
     --surface: #ffffff;
-    --surface-soft: #f0f7f3;
-    --primary: #22c55e;
-    --primary-dark: #16a34a;
-    --primary-glow: rgba(34, 197, 94, 0.25);
+    --surface-soft: #D4E0ED;
+    --primary: #3b82f6;
+    --primary-dark: #0A58D6;
+    --primary-glow: #1E2938;
     --text-main: #1f2937;
     --text-muted: #6b7280;
-    --border-soft: #e5efe9;
+    --border-soft: #D4E0ED;
 }
 
 /* --- Job Card Styles --- */

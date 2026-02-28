@@ -17,12 +17,12 @@ html, body {
 	margin: 0;
 }
 
-<<<<<<< HEAD
 main {
     display: block;
     justify-content: center;
     margin: 0 auto;
-=======
+
+}
 #home-page {
     display: grid;
     grid-template-columns: 25% 75%;
@@ -46,7 +46,6 @@ main {
     display: block;
     
 	flex: 1;
->>>>>>> a5f14b7 (keep footers at bottom)
 	width: 100%;
 	max-width: 420px;
 	padding: 20px;
