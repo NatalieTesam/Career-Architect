@@ -1,4 +1,4 @@
-const FEDORA_IP = "100.94.140.36"; 
+const FEDORA_IP = "100.94.140.36";
 const API_URL = `http://${FEDORA_IP}:1234/v1/chat/completions`;
 
 // --- DATA UTILITIES ---
@@ -22,15 +22,6 @@ function extractSkills(masterFile) {
 }
 
 // --- UI RENDERING ---
-
-function branchTemplate(users) {
-  const html = users
-    .map(user => `<div><h4>${user.name}</h4><p>Skills: ${user.skills.join(", ")}</p></div>`)
-    .join("");
-
-  const container = document.getElementById("template");
-  if (container) container.innerHTML = html;
-}
 
 function renderSkills(skills) {
   const container = document.getElementById("skills-container");
@@ -82,7 +73,9 @@ function renderSkills(skills) {
 // --- JOB API LOGIC ---
 
 async function getJobs(role = "developer") {
-  const url = `/api/jobs?role=${encodeURIComponent(role)}&results_per_page=8`;
+  if (!role) role = "developer";
+
+  const url = `http://localhost:3000/api/jobs?role=${encodeURIComponent(role)}&results_per_page=6`;
 
   try {
     const response = await fetch(url);
@@ -94,7 +87,7 @@ async function getJobs(role = "developer") {
     console.error("Error fetching jobs:", error);
     document.getElementById('jobs').innerHTML = '<p>Could not load jobs at this time.</p>';
   }
-}
+};
 
 function displayJobs(jobs) {
   const container = document.getElementById("jobs");
@@ -105,12 +98,12 @@ function displayJobs(jobs) {
 
   container.innerHTML = jobs.map(job => `
     <div class="job" style="margin-bottom: 15px; padding: 10px; border: 1px solid #eee; border-radius: 8px;">
-      <h3 style="font-size: 1rem;">${job.title}</h3>
+      <h4 style="font-size: 1rem;">${job.title}</h4>
       <p style="font-size: 0.8rem; color: #6b7280;">${job.company.display_name}</p>
       <a href="${job.redirect_url}" target="_blank" class="job-link" style="color: #22c55e; font-size: 0.8rem;">View Job</a>
     </div>
   `).join("");
-}
+};
 
 // --- AI RESUME BUILDER LOGIC ---
 
@@ -140,13 +133,13 @@ async function generateResumeBullets() {
         body: JSON.stringify({
           model: "google/gemma-3-1b-it",
           messages: [
-            { 
-              role: "system", 
-              content: "You are a Technical Resume Expert. Write ONE powerful, measurable resume bullet point starting with a strong action verb based on these tasks. One sentence only. Do not use Markdown bolding." 
+            {
+              role: "system",
+              content: "You are a Technical Resume Expert. Write ONE powerful, measurable resume bullet point starting with a strong action verb based on these tasks. One sentence only. Do not use Markdown bolding."
             },
-            { 
-              role: "user", 
-              content: `Skill: ${skillEntry.skillTitle}. Completed Work: ${JSON.stringify(skillEntry.completedPhases)}` 
+            {
+              role: "user",
+              content: `Skill: ${skillEntry.skillTitle}. Completed Work: ${JSON.stringify(skillEntry.completedPhases)}`
             }
           ],
           temperature: 0.3
@@ -173,11 +166,31 @@ async function generateResumeBullets() {
   }
 }
 
+function setupSearch() {
+  const input = document.getElementById("role-input");
+  const button = document.getElementById("search-button");
+
+  // Button click
+  button.addEventListener("click", () => {
+    const roleInput = input.value.trim();
+    getJobs(roleInput);
+  });
+
+  // // Enter key press
+  // input.addEventListener("keydown", (e) => {
+  //   if (e.key === "Enter") {
+  //     const roleInput = input.value.trim();
+  //     getJobs(roleInput);
+  //   }
+  // });
+}
+
 // --- INITIALIZATION ---
 
 async function init() {
   // 1. Run Legacy Functions
   getJobs("developer");
+  setupSearch();
 
   // 2. Load and Render Visual Roadmap
   const master = getMasterProgress();
@@ -186,14 +199,7 @@ async function init() {
 
   // 3. Generate AI Resume Content
   generateResumeBullets();
-}
 
-// Listeners
-document.getElementById("search-button").addEventListener("click", () => {
-  const roleInput = document.getElementById("role-input").value.trim();
-  if (roleInput) {
-    getJobs(roleInput);
-  }
-});
+};
 
-window.onload = init;
+document.addEventListener("DOMContentLoaded", init);

@@ -1,0 +1,61 @@
+#role-input, #search-button{
+    margin-bottom: 4px;
+}
+
+#role-input {
+  padding: 5px 5px;
+  width: 220px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #111827;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+#role-input::placeholder {
+  color: #9ca3af;
+}
+
+#role-input:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+
+#search-button {
+  padding: 5px 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+
+  transition: all 0.25s ease;
+}
+
+#search-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(34, 197, 94, 0.25);
+}
+
+#search-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(34, 197, 94, 0.2);
+}
+
+#container{
+    justify-items: center;
+}
+
+.job-opp{
+    padding: 4px;
+}
+
+#bigger-session{
+    grid-template-rows: 80% 20%;
+}

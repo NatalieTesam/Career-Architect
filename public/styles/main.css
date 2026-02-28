@@ -22,22 +22,27 @@
 
 
 body {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
 }
 
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
 }
 
 /* Reset */
@@ -51,9 +56,14 @@ body {
     font-family: 'Inter', system-ui, sans-serif;
     background: radial-gradient(circle at top right, #e6f7ee, var(--bg) 60%);
     color: var(--text-main);
-    min-height: 100vh;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+    /* prevents sideways scroll */
+    overflow-y: auto;
+    /* ensures vertical scroll */
+    margin: 0;
 }
 
 /* ============================= */
@@ -134,7 +144,7 @@ nav a:hover::after {
     background: radial-gradient(circle at top right, #e6f7ee, var(--bg) 60%);
     border-radius: 18px;
     padding: 20px;
-    box-shadow: 
+    box-shadow:
         0 10px 30px var(--primary-glow);
     border: 1px solid var(--border-soft);
     display: flex;
@@ -153,14 +163,14 @@ nav a:hover::after {
     padding: 25px;
     overflow: hidden;
     border: 1px solid var(--border-soft);
-    box-shadow: 
+    box-shadow:
         0 20px 60px var(--primary-glow);
     transition: all 0.4s ease;
 }
 
 #steps-tree:hover {
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 25px 70px var(--primary-glow);
 }
 
@@ -173,7 +183,7 @@ nav a:hover::after {
     height: 120px;
     border-radius: 50%;
     background: linear-gradient(145deg, #ffffff, var(--surface-soft));
-    box-shadow: 
+    box-shadow:
         0 8px 25px var(--primary-glow);
     border: 1px solid var(--border-soft);
     display: flex;
@@ -189,7 +199,7 @@ nav a:hover::after {
 
 .node:hover {
     transform: scale(1.07);
-    box-shadow: 
+    box-shadow:
         0 0 0 6px var(--primary-glow),
         0 15px 40px var(--primary-glow);
     background: linear-gradient(145deg, #f0fdf4, #dcfce7);
@@ -203,6 +213,7 @@ nav a:hover::after {
     padding: 15px;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
+    min-height: 100vh;
 }
 
 /* ============================= */
@@ -240,17 +251,18 @@ footer {
     }
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 main {
-flex: 1;
+    flex: 1;
 }
