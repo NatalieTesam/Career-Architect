@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/skills.css">
 
+    <script src="./skills.js" defer type="module"></script>
+
 </head>
 
 <body>
@@ -98,6 +100,53 @@
         </a>
         <span>HackUSU 2026</span>
     </footer>
+
+    <!-- skill modal (form) -->
+    <div id="skill-modal" class="skill-modal" aria-hidden="true">
+      <div class="skill-modal__backdrop" data-close="true"></div>
+      <div class="skill-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="skill-modal-title">
+        <button class="skill-modal__close" aria-label="Close">×</button>
+        <div class="skill-modal__content">
+          <h2 id="skill-modal-title"></h2>
+
+          <form id="skill-form">
+            <input type="hidden" id="skill-id" name="skillId" value="">
+            <div class="form-row">
+              <label for="duration-number">Duration</label>
+              <div class="duration-group">
+                <input id="duration-number" name="durationNumber" type="number" min="0" value="1" required>
+                <select id="duration-unit" name="durationUnit">
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                  <option value="weeks">Weeks</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="difficulty">Difficulty</label>
+              <select id="difficulty" name="difficulty">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="other-info">Other information</label>
+              <textarea id="other-info" name="otherInfo" rows="4" placeholder="Notes..."></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-save">Start Learning</button>
+              <button type="button" class="btn-cancel">Cancel</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
 </body>
 
 </html>
