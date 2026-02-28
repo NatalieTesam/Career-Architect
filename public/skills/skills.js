@@ -132,7 +132,7 @@ let openModal;
   });
 })();
 
-const FEDORA_IP = "10.3.9.69"; 
+const FEDORA_IP = "100.94.140.36"; 
 const API_URL = `http://${FEDORA_IP}:1234/v1/chat/completions`;
 
 const searchForm = document.getElementById('job-search-form');
