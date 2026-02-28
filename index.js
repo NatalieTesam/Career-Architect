@@ -17,18 +17,33 @@ function generalSkills() {
 
 }
 
+// function branchTemplate(users) {
+//   let html = "";
+
+//   const userInfo = users.forEach(user => {
+//     user.skills.forEach(skill => {
+//       html += `${skill}\n`;
+//     });
+//   });
+
+//   container.innerHTML = html;
+
+// }
+
 function branchTemplate(users) {
-  users.forEach(user => {
-    user.skills.forEach(skill => {
-      console.log(`${user.name} wants to learn ${skill}`);
-    });
-  });
+  const html = users
+    .map(user =>
+      user.skills.map(skill => `<p>${skill}</p>`).join("")
+    )
+    .join("");
+
+  container.innerHTML = html;
 }
 
 function init(){
-    generalSkills();
-    branchTemplate;
-
+  generalSkills();
+  branchTemplate(users);
+  
 }
 
 init();
