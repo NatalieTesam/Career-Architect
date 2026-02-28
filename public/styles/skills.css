@@ -1,3 +1,15 @@
+:root {
+    --bg: #f6fbf8;
+    --surface: #ffffff;
+    --surface-soft: #f0f7f3;
+    --primary: #22c55e;
+    --primary-dark: #16a34a;
+    --primary-glow: rgba(34, 197, 94, 0.25);
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-soft: #e5efe9;
+}
+
 /* --- Job Card Styles --- */
 .job {
   border: 1px solid #ddd;
@@ -11,21 +23,22 @@
 }
 
 .job:focus-within {
-  border-color: #0b74de;
+  border-color: var(--primary-dark);
   box-shadow: 0 4px 12px rgba(11,116,222,0.12);
   outline: none;
 }
 
 /* AI-Generated & Loading States */
 #job-list-container .job {
-  border-top: 3px solid #0b74de;
+  border-top: 3px solid var(--primary-dark);
 }
 
 .job[id^="loading-"] {
-  border-left: 6px solid #0b74de;
+  border-left: 6px solid var(--primary-dark);
   background: #f9fafb;
   opacity: 0.8;
   animation: pulse 1.5s infinite ease-in-out;
+  padding: 10px;
 }
 
 @keyframes pulse {
@@ -54,6 +67,14 @@
   margin: 1rem auto;
 }
 
+.job h2 {
+  padding: 10px;
+}
+
+.job p {
+  padding: 0 10px 10px;
+}
+
 #job-search-form {
   display: flex;
   gap: 10px;
@@ -72,8 +93,8 @@
 #search-section button[type="submit"] {
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
-  border: 1px solid #0b74de;
-  background: #0b74de;
+  border: 1px solid var(--primary-dark);
+  background: var(--primary);
   color: #fff;
   cursor: pointer;
   font: inherit;
@@ -86,6 +107,8 @@
 /* --- Skills Buttons & Containers --- */
 .skills-container {
   margin-top: 0.5rem;
+  border-top: var(--primary) 1px solid;
+  padding: 15px;
 }
 
 .skills-list {
@@ -124,9 +147,9 @@
 .skill-btn:focus-visible,
 .skill-btn.active,
 .skill-btn[aria-pressed="true"] {
-  background-color: #0b74de;
+  background-color: var(--primary-dark);
   color: #fff !important;
-  border-color: #075aa1;
+  border-color: var(--primary-dark);
 }
 
 /* Skill Button Plus Icon */
@@ -250,9 +273,9 @@
 }
 
 .btn-save {
-  background: #0b74de;
+  background: var(--primary-dark);
   color: #fff;
-  border: 1px solid #0b74de;
+  border: 1px solid var(--primary-dark);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   cursor: pointer;
